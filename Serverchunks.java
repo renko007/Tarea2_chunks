@@ -23,7 +23,7 @@ public class Serverchunks {
 	public static void main(String args[]) throws IOException{
 
 
-	    InetAddress address=InetAddress.getByName("192.168.0.12");
+	    InetAddress address=InetAddress.getByName("192.168.0.19");
 	    Socket s1=null;
 	    DataInputStream  is = null;
 	    DataOutputStream os=null;
@@ -46,7 +46,13 @@ public class Serverchunks {
 	    	is = new DataInputStream(s1.getInputStream());
 	        os = new DataOutputStream(s1.getOutputStream());
 	        while(true){
-	        	String operation=is.readUTF();
+	        	String operation="aaaa";
+	        	try{
+	        		operation=is.readUTF();
+	        	}
+	        	catch (Exception exc){
+	        		
+	        	}
 	            if(operation.contains("put")){
 	            	InputStream in = null;
 	                OutputStream out = null;
@@ -66,7 +72,10 @@ public class Serverchunks {
 	                byte[] bytes = new byte[64*1024];
 	                in.read(bytes, 0, 64*1024);
 	                out.write(bytes, 0,64*1024);
+	                out.flush();
 	                out.close();
+	                os.writeUTF("Downloaded "+f);
+	                System.out.println("Downloaded "+f);
 	            }
 		//COMANDO put
 	            else if(operation.contains("get")) {
@@ -78,6 +87,7 @@ public class Serverchunks {
 	                os.write(bytes, 0, 64*1024);
 	                System.out.println("Subida realizada");
 	                in.close();
+	                System.out.println("Sended "+name);
 	            }
 		//comando delete
 	            else if(operation.contains("delete")) {
@@ -85,6 +95,7 @@ public class Serverchunks {
 	            	String del=operation.split(" ")[1];
 	            	File file=new File(del);
 	            	file.delete();
+	            	System.out.println("Deleted "+del);
 	            }
 	            else if (operation.contains("ls")) {
 	            	String del=operation.split(" ")[1];
@@ -100,13 +111,13 @@ public class Serverchunks {
 	    }
 	    catch(IOException e){
 	        e.printStackTrace();
-	    System.out.println("Socket read Error");
+	        System.out.println("Socket read Error");
 	    }
 	    finally{
-
-	        is.close();os.close();s1.close();
-	                System.out.println("Connection Closed");
-
+	    	is.close();
+	    	os.close();
+	    	s1.close();
+	    	System.out.println("Connection Closed");
 	    }
 
 	}
