@@ -23,7 +23,7 @@ public class Serverchunks {
 	public static void main(String args[]) throws IOException{
 
 
-	    InetAddress address=InetAddress.getByName("192.168.0.19");
+	    InetAddress address=InetAddress.getByName("10.2.199.1");
 	    Socket s1=null;
 	    DataInputStream  is = null;
 	    DataOutputStream os=null;
